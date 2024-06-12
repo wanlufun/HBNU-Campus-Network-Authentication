@@ -1,0 +1,45 @@
+name: Release Build
+
+permissions: write-all
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+jobs:
+  build-on-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Python 3.8
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+          architecture: 'x64'
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Run pyinstaller
+        run: |
+          pyinstaller auth.py --onefile --name Network_Authentication --add-data '.env:.'
+
+      - name: Rename
+        run: |
+          Rename-Item 'Network_Authentication*' 'Network_Authentication_${{ github.ref_name }}_windows.exe'
+
+      - name: Upload Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: HBNU Campus Network Authentication ${{ github.ref_name }}
+          body: "More new features are now supported."
+          draft: false
+          prerelease: false
+          files: dist/*

@@ -1,0 +1,8 @@
+# Used to convert JavaScript code to Python directly within Python scripts, allowing Python applications to run JavaScript code seamlessly.
+js2py
+
+# Used to send HTTP requests.
+requests
+
+# Used to read environment variables.
+python-dotenv

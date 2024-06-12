@@ -32,7 +32,8 @@ jobs:
 
       - name: Rename
         run: |
-          Rename-Item 'Network_Authentication*' 'Network_Authentication_${{ github.ref_name }}_windows.exe'
+          Rename-Item './dist/Network_Authentication*' 'Network_Authentication_${{ github.ref_name }}_windows.exe'
+        shell: pwsh
 
       - name: Upload Release
         uses: softprops/action-gh-release@v2
